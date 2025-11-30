@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Card, Button, Table, Alert, Badge } from 'react-bootstrap'
+import { Card, Button, Alert, Badge, Row, Col, Container } from 'react-bootstrap'
 import { useCart } from '../context/CartContext'
 import api from '../services/api'
 
@@ -90,94 +90,172 @@ function Cart() {
     }
   }
 
+  // Iconos SVG
+  const EmptyCartIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" viewBox="0 0 16 16" className="text-muted mb-4">
+      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </svg>
+  )
+
+  const TrashIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+      <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+    </svg>
+  )
+
   if (cartItems.length === 0) {
     return (
-      <div>
-        <h2 className="mb-4">Carrito de Compras</h2>
-        <Alert variant="info">Tu carrito está vacío</Alert>
-        <Button variant="primary" onClick={() => navigate('/products')}>
-          Ver Productos
-        </Button>
-      </div>
+      <Container>
+        <div className="text-center py-5">
+          <EmptyCartIcon />
+          <h2 className="mb-3">Tu carrito está vacío</h2>
+          <p className="text-muted mb-4">Agrega productos a tu carrito para comenzar a comprar</p>
+          <Button variant="primary" size="lg" onClick={() => navigate('/products')}>
+            Explorar Productos
+          </Button>
+        </div>
+      </Container>
     )
   }
 
   return (
-    <div>
-      <h2 className="mb-4">Carrito de Compras</h2>
-      
-      {error && <Alert variant="danger">{error}</Alert>}
-
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.map((item) => (
-            <tr key={item.productId}>
-              <td>{item.productTitle}</td>
-              <td>${item.productPrice?.toFixed(2) || '0.00'}</td>
-              <td>
-                <div className="d-flex align-items-center">
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                  >
-                    -
-                  </Button>
-                  <span className="mx-3">{item.quantity}</span>
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                  >
-                    +
-                  </Button>
-                </div>
-              </td>
-              <td>${((item.productPrice || 0) * item.quantity).toFixed(2)}</td>
-              <td>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => removeFromCart(item.productId)}
-                >
-                  Eliminar
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={3} className="text-end"><strong>Total:</strong></td>
-            <td><strong>${getTotalPrice().toFixed(2)}</strong></td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </Table>
-
-      <div className="d-flex justify-content-between mt-4">
-        <Button variant="outline-secondary" onClick={clearCart}>
-          Vaciar Carrito
-        </Button>
-        <Button 
-          variant="success" 
-          size="lg" 
-          onClick={handleCheckout}
-          disabled={loading}
-        >
-          {loading ? 'Procesando...' : 'Finalizar Compra'}
-        </Button>
+    <Container>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="mb-0">Carrito de Compras</h2>
+        <Badge bg="secondary" className="fs-6 px-3 py-2">
+          {cartItems.length} {cartItems.length === 1 ? 'producto' : 'productos'}
+        </Badge>
       </div>
-    </div>
+      
+      {error && <Alert variant="danger" dismissible onClose={() => setError('')}>{error}</Alert>}
+
+      <Row>
+        <Col lg={8}>
+          <div className="d-flex flex-column gap-3">
+            {cartItems.map((item) => (
+              <Card key={item.productId} className="shadow-sm">
+                <Card.Body>
+                  <Row className="align-items-center">
+                    <Col xs={12} md={6}>
+                      <div className="d-flex align-items-center">
+                        <div className="bg-light rounded p-3 me-3" style={{ minWidth: '80px', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16" className="text-muted">
+                            <path d="M6.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <h5 className="mb-1">{item.productTitle}</h5>
+                          <p className="text-muted mb-0 small">
+                            {item.productDescription || 'Sin descripción'}
+                          </p>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={6}>
+                      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-3 mt-md-0">
+                        <div className="d-flex align-items-center gap-2">
+                          <Button
+                            variant="outline-secondary"
+                            size="sm"
+                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                            disabled={item.quantity === 1}
+                            style={{ minWidth: '36px' }}
+                          >
+                            −
+                          </Button>
+                          <span className="fw-bold" style={{ minWidth: '30px', textAlign: 'center' }}>
+                            {item.quantity}
+                          </span>
+                          <Button
+                            variant="outline-secondary"
+                            size="sm"
+                            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                            style={{ minWidth: '36px' }}
+                          >
+                            +
+                          </Button>
+                        </div>
+                        <div className="text-md-end">
+                          <div className="text-muted small">Precio unitario</div>
+                          <div className="fw-bold">${item.priceUnit?.toFixed(2) || '0.00'}</div>
+                          <div className="text-muted small mt-1">Subtotal</div>
+                          <div className="h5 text-primary mb-0">${((item.priceUnit || 0) * item.quantity).toFixed(2)}</div>
+                        </div>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => removeFromCart(item.productId)}
+                          className="d-flex align-items-center gap-1"
+                        >
+                          <TrashIcon />
+                          <span className="d-none d-md-inline">Eliminar</span>
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            ))}
+          </div>
+        </Col>
+        
+        <Col lg={4}>
+          <Card className="shadow-sm sticky-top" style={{ top: '20px' }}>
+            <Card.Header className="bg-primary text-white">
+              <h5 className="mb-0">Resumen de Compra</h5>
+            </Card.Header>
+            <Card.Body>
+              <div className="d-flex justify-content-between mb-3">
+                <span className="text-muted">Subtotal ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} items)</span>
+                <span>${getTotalPrice().toFixed(2)}</span>
+              </div>
+              <div className="d-flex justify-content-between mb-3">
+                <span className="text-muted">Envío</span>
+                <span className="text-success">Gratis</span>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-between mb-4">
+                <span className="h5 mb-0">Total</span>
+                <span className="h4 text-primary mb-0">${getTotalPrice().toFixed(2)}</span>
+              </div>
+              <div className="d-grid gap-2">
+                <Button 
+                  variant="success" 
+                  size="lg" 
+                  onClick={handleCheckout}
+                  disabled={loading}
+                  className="fw-bold"
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      Procesando...
+                    </>
+                  ) : (
+                    'Finalizar Compra'
+                  )}
+                </Button>
+                <Button 
+                  variant="outline-secondary" 
+                  onClick={clearCart}
+                  disabled={loading}
+                >
+                  Vaciar Carrito
+                </Button>
+                <Button 
+                  variant="outline-primary" 
+                  onClick={() => navigate('/products')}
+                >
+                  Continuar Comprando
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

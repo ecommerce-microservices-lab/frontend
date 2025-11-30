@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Navbar as BootstrapNavbar, Nav, NavDropdown, Badge } from 'react-bootstrap'
 import { useCart } from '../context/CartContext'
+import ApiStatus from './ApiStatus'
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth()
@@ -34,7 +35,10 @@ function Navbar() {
             </>
           )}
         </Nav>
-        <Nav>
+        <Nav className="align-items-center">
+          <Nav.Item className="me-3">
+            <ApiStatus />
+          </Nav.Item>
           {isAuthenticated ? (
             <NavDropdown title="Mi Cuenta" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/profile">Perfil</NavDropdown.Item>

@@ -57,3 +57,143 @@ code {
   border-color: rgba(13, 110, 253, 0.2);
 }
 
+/* Auth Page Styles */
+.auth-page {
+  overflow-x: hidden;
+}
+
+.auth-form-panel,
+.auth-promo-panel {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Animaciones de entrada */
+.slide-in-left {
+  animation: slideInLeft 0.3s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Animaciones de salida */
+.slide-out-left {
+  animation: slideOutLeft 0.3s ease-in forwards;
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Responsive: En móviles, los paneles se apilan verticalmente */
+@media (max-width: 991.98px) {
+  .auth-form-panel,
+  .auth-promo-panel {
+    min-height: 400px;
+  }
+  
+  .slide-in-left {
+    animation: slideInUp 0.3s ease-out forwards;
+  }
+  
+  .slide-in-right {
+    animation: slideInDown 0.3s ease-out forwards;
+  }
+  
+  .slide-out-left {
+    animation: slideOutDown 0.3s ease-in forwards;
+  }
+  
+  .slide-out-right {
+    animation: slideOutUp 0.3s ease-in forwards;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+

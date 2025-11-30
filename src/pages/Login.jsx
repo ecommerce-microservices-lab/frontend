@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { Form, Button, Card, Alert } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { Form, Button, Card, Alert, Container, Row, Col } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 
 function Login() {
@@ -8,6 +8,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
@@ -27,49 +28,166 @@ function Login() {
     setLoading(false)
   }
 
+  const handleSwitch = () => {
+    setShowRegister(true)
+    setTimeout(() => {
+      navigate('/register')
+    }, 300)
+  }
+
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-      <Card style={{ width: '400px' }}>
-        <Card.Body>
-          <Card.Title className="text-center mb-4">Iniciar Sesión</Card.Title>
-          
-          {error && <Alert variant="danger">{error}</Alert>}
-          
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Usuario</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingresa tu usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </Form.Group>
+    <div className="auth-page" style={{ minHeight: 'calc(100vh - 76px)', padding: '2rem 0' }}>
+      <Container fluid>
+        <Row className="g-0" style={{ minHeight: '600px'}}>
+          {/* Formulario de Login - Izquierda */}
+          <Col 
+            lg={6} 
+            className={`auth-form-panel ${showRegister ? 'slide-out-left' : 'slide-in-left'}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '2rem',
+              backgroundColor: '#fff'
+            }}
+          >
+            <Card 
+              className="border-0 w-100 h-100"
+            >
+              <Card.Body className="p-4">
+                <div className="text-center mb-4">
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🔐</div>
+                  <Card.Title className="mb-0" style={{ fontSize: '1.75rem', fontWeight: '600' }}>
+                    Iniciar Sesión
+                  </Card.Title>
+                  <p className="text-muted mb-0 mt-2" style={{ fontSize: '0.9rem' }}>
+                    Bienvenido de nuevo
+                  </p>
+                </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Ingresa tu contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
+                {error && (
+                  <Alert 
+                    variant="danger" 
+                    className="mb-4 border-0"
+                    style={{ borderRadius: '0.5rem' }}
+                  >
+                    <strong>Error:</strong> {error}
+                  </Alert>
+                )}
+                
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-semibold mb-2">
+                      Usuario
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Ingresa tu usuario"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                      className="py-2"
+                      style={{ 
+                        borderRadius: '0.5rem',
+                        border: '1px solid #dee2e6'
+                      }}
+                    />
+                  </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-              {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </Button>
-          </Form>
+                  <Form.Group className="mb-4">
+                    <Form.Label className="fw-semibold mb-2">
+                      Contraseña
+                    </Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Ingresa tu contraseña"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="py-2"
+                      style={{ 
+                        borderRadius: '0.5rem',
+                        border: '1px solid #dee2e6'
+                      }}
+                    />
+                  </Form.Group>
 
-          <div className="text-center mt-3">
-            <p>
-              ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-            </p>
-          </div>
-        </Card.Body>
-      </Card>
+                  <Button 
+                    variant="primary" 
+                    type="submit" 
+                    className="w-100 py-2 fw-semibold"
+                    disabled={loading}
+                    style={{ 
+                      borderRadius: '0.5rem',
+                      fontSize: '1rem',
+                      boxShadow: '0 2px 4px rgba(13, 110, 253, 0.3)'
+                    }}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Iniciando sesión...
+                      </>
+                    ) : (
+                      'Iniciar Sesión'
+                    )}
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Panel Promocional - Derecha */}
+          <Col 
+            lg={6}
+            className={`auth-promo-panel ${showRegister ? 'slide-out-right' : 'slide-in-right'}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '2rem',
+              background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)',
+              color: 'white',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            <div 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+                opacity: 0.3
+              }}
+            />
+            <div className="text-center" style={{ position: 'relative', zIndex: 1, maxWidth: '400px' }}>
+              <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✨</div>
+              <h2 className="mb-3" style={{ fontSize: '2rem', fontWeight: '600' }}>
+                ¿No tienes cuenta?
+              </h2>
+              <p className="mb-4" style={{ fontSize: '1.1rem', opacity: 0.9 }}>
+                Únete a nosotros y descubre los mejores productos al mejor precio
+              </p>
+              <Button 
+                variant="light" 
+                size="lg"
+                className="px-5 py-2 fw-semibold"
+                onClick={handleSwitch}
+                style={{ 
+                  borderRadius: '0.5rem',
+                  fontSize: '1rem',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)'
+                }}
+              >
+                Regístrate aquí
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }

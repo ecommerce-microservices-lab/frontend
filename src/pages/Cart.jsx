@@ -78,7 +78,7 @@ function Cart() {
       await api.post('/app/api/payments', paymentData)
 
       clearCart()
-      navigate('/profile', { state: { message: 'Orden creada exitosamente' } })
+      navigate('/orders', { state: { message: 'Orden creada exitosamente' } })
     } catch (err) {
       setError('Error al procesar la orden. Por favor intenta de nuevo.')
       console.error('Error en checkout:', err)

@@ -53,7 +53,7 @@ function Navbar() {
           </Nav.Item>
           {isAuthenticated && (
             <>
-              <Nav.Link as={Link} to="/profile" className="d-flex align-items-center me-3" title="Órdenes">
+              <Nav.Link as={Link} to="/orders" className="d-flex align-items-center me-3" title="Órdenes">
                 <OrdersIcon />
               </Nav.Link>
               <Nav.Link as={Link} to="/cart" className="d-flex align-items-center position-relative me-3" title="Carrito" style={{ paddingRight: '8px' }}>

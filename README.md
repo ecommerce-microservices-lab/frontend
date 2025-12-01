@@ -2,6 +2,8 @@
 
 Frontend React para el proyecto de microservicios ecommerce.
 
+> **Nota**: El frontend solo se despliega en producción (namespace `prod`). Los workflows de `dev` y `stage` saltarán automáticamente el deploy si el manifest no existe.
+
 ## 🚀 Inicio Rápido
 
 ### Instalación

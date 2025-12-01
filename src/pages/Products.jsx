@@ -63,7 +63,7 @@ function Products() {
                     {product.productDescription || 'Sin descripción'}
                   </Card.Text>
                   <Card.Text className="h5 text-primary">
-                    ${product.productPrice?.toFixed(2) || '0.00'}
+                    ${product.priceUnit?.toFixed(2) || '0.00'}
                   </Card.Text>
                   <div className="d-grid gap-2">
                     <Link to={`/products/${product.productId}`}>

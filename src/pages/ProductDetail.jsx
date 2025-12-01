@@ -57,7 +57,7 @@ function ProductDetail() {
           <Card.Body>
             <Card.Title className="display-6">{product.productTitle}</Card.Title>
             <Card.Text className="h3 text-primary mb-4">
-              ${product.productPrice?.toFixed(2) || '0.00'}
+              ${product.priceUnit?.toFixed(2) || '0.00'}
             </Card.Text>
             <Card.Text>
               {product.productDescription || 'Sin descripción disponible'}

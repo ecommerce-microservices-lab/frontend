@@ -8,7 +8,7 @@ import Register from './pages/Register'
 import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
-import Profile from './pages/Profile'
+import Orders from './pages/Orders'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -34,10 +34,10 @@ function App() {
                 } 
               />
               <Route 
-                path="/profile" 
+                path="/orders" 
                 element={
                   <ProtectedRoute>
-                    <Profile />
+                    <Orders />
                   </ProtectedRoute>
                 } 
               />
